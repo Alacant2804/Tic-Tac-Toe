@@ -17,7 +17,9 @@ const mySymbol = function() {
 
 
 const gameboard = {
-
+    board: [ , , ,
+      , , ,    
+      , , ,]
 }
 
 const players = {
@@ -28,4 +30,3 @@ const players = {
 const game = {
 
 }
-
