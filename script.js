@@ -16,11 +16,10 @@ const mySymbol = function() {
 }
 
 
-const gameboard = {
-    board: [ , , ,
-      , , ,    
-      , , ,]
-}
+const gameboard = [['', '', ''],
+                   ['', '', ''],
+                   ['', '', ''] 
+                ];
 
 const players = {
     name: myName,
