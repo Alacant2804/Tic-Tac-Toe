@@ -2,20 +2,33 @@ const Gameboard = (() => {
     const board = ['', '', '', '', '', '', '', '', ''];
 
     const checkForWinner = () => {
-        // Check rows, columns, and diagonals for a winner
-        // ...
+        for (let i = 0; i < 9; i += 3) {
+            if (board[i] !== '' && board[i] === board[i + 1] && board[i] === board[i + 2]) {
+                return board[i]; 
+            }
+        }
 
-        return null; // No winner
+        for (let i = 0; i < 3; i++) {
+            if (board[i] !== '' && board[i] === board[i + 3] && board[i] === board[i + 6]) {
+                return board[i]; 
+            }
+        }
+
+        if (board[0] !== '' && board[0] === board[4] && board[0] === board[8]) {
+            return board[0]; 
+        }
+
+        if (board[2] !== '' && board[2] === board[4] && board[2] === board[6]) {
+            return board[2]; 
+        }
+
+        return null;
     };
 
     const checkForTie = () => {
-        // Check if all cells are used
         const allCellsUsed = board.every(cell => cell !== '');
-
-        // Check if there is no winner
         const noWinner = checkForWinner() === null;
 
-        // If all cells are used and there is no winner, it's a tie
         return allCellsUsed && noWinner;
     };
 
@@ -73,7 +86,7 @@ const GameController = (() => {
             player2,
             startingPlayer,
         };
-    };
+};
     
 
     const makeMove = (index) => {
