@@ -1,0 +1,83 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f8f8;
+    margin: 0;
+    padding: 0;
+}
+
+.header {
+    background-color: #ffcc00;
+    padding: 20px;
+    text-align: center;
+}
+
+.game-name {
+    color: #333;
+}
+
+.main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px;
+}
+
+.scoreX,
+.scoreO {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.message {
+    font-size: 18px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.gameboard {
+    display: grid;
+    grid-template-columns: repeat(3, 100px);
+    grid-gap: 10px;
+}
+
+.field {
+    width: 100px;
+    height: 100px;
+    background-color: #bfff80;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.field:hover {
+    background-color: #99ff66;
+}
+
+.field::after {
+    content: attr(data-symbol); /* Use the data-symbol attribute to dynamically set X or O */
+    font-size: 1em; /* Adjust the font size as needed */
+}
+
+.restart-button {
+    background-color: #ffcc00;
+    color: #333;
+    font-size: 18px;
+    padding: 10px 20px;
+    margin-top: 20px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+}
+
+.footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}

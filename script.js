@@ -60,22 +60,19 @@ const Player = (name, symbol) => {
 };
 
 const UIController = {
+    messageEl: document.querySelector('.message'),
+
     displayMessage: (message) => {
-        const messageEl = document.querySelector('.message');
-        const para = document.createElement('p');
-        para.textContent = message;
-        messageEl.appendChild(para);
+        UIController.messageEl.textContent = message;
     }
 }
 
 const GameController = (() => {
     const initializeGame = () => {
-        const player1 = Player('Player 1', 'X');
+        const player1 = Player('Player 1', 'X'); 
         const player2 = Player('Player 2', 'O');
         
-        const gameboardInstance = Gameboard(); // Create an instance
-
-        gameboardInstance.resetBoard(); // Call resetBoard on the instance
+        const gameboardInstance = Gameboard; // Create an instance
 
         const startingPlayer = Math.random() < 0.5 ? player1 : player2;
 
@@ -84,24 +81,66 @@ const GameController = (() => {
         gameboardInstance.players = {
             player1,
             player2,
-            startingPlayer,
+            currentPlayer: startingPlayer,
         };
+
+        gameboardInstance.resetBoard(); // Call resetBoard on the instance
 };
     
 
-    const makeMove = (index) => {
-        // Make a move on the board
-        // Example: Gameboard.makeMove(index, currentPlayer.symbol);
-        // Example: Check for winner or tie
-        // Example: Switch players
-    };
+const makeMove = (index) => {
+    // Check if the game is still ongoing
+    if (!Gameboard.checkForWinner() && !Gameboard.checkForTie()) {
+        // Get the current player
+        const currentPlayer = Gameboard.players.currentPlayer;
 
-    const restartGame = () => {
-        // Restart the game
-        // Example: Gameboard.resetBoard();
-        // Example: Reset scores or any other game-related data
-        // Example: Set currentPlayer to playerX
-    };
+        // Make a move on the board
+        const moveSuccess = Gameboard.makeMove(index, currentPlayer.symbol);
+
+        // If the move is successful, check for a winner or tie
+        if (moveSuccess) {
+            const clickedField = document.querySelector(`.field[data-index="${index}"]`);
+            clickedField.textContent = currentPlayer.symbol;
+            if (Gameboard.checkForWinner()) {
+                UIController.displayMessage(`${currentPlayer.name} wins!`);
+                // Handle any additional logic for a win
+            } else if (Gameboard.checkForTie()) {
+                UIController.displayMessage("It's a tie!");
+                // Handle any additional logic for a tie
+            } else {
+                // Switch players for the next turn
+                Gameboard.players.currentPlayer =
+                    currentPlayer === Gameboard.players.player1
+                        ? Gameboard.players.player2
+                        : Gameboard.players.player1;
+
+                // Update the UI with the next player's turn
+                UIController.displayMessage(`${Gameboard.players.currentPlayer.name}'s turn.`);
+            }
+
+            // Update the display or perform other necessary actions
+        } else {
+            // Inform the player that the move is invalid (e.g., the cell is already taken)
+            UIController.displayMessage('Invalid move. Try again.');
+        }
+    } else {
+        // The game has already ended; display an appropriate message
+        UIController.displayMessage('The game has ended. Restart to play again.');
+    }
+};
+
+const restartGame = () => {
+    const restartButton = document.querySelector('.restart-button');
+
+    restartButton.addEventListener('click', () => {
+        // Clear the content of each .field element
+        document.querySelectorAll('.field').forEach(field => {
+            field.textContent = '';
+        });
+
+        Gameboard.resetBoard();
+    });
+};
 
     return {
         initializeGame,
@@ -110,21 +149,16 @@ const GameController = (() => {
     };
 })();
 
-// Event listeners for interactive elements
 document.querySelectorAll('.field').forEach((field, index) => {
     field.addEventListener('click', () => {
         GameController.makeMove(index);
-        // Update the display or any other necessary actions
     });
 });
 
 document.querySelector('.restart-button').addEventListener('click', () => {
     GameController.restartGame();
-    // Update the display or any other necessary actions
 });
 
-// Initialize the game when the page loads
 window.addEventListener('load', () => {
     GameController.initializeGame();
-    // Update the display or any other necessary actions
 });
