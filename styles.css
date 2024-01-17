@@ -22,10 +22,32 @@ body {
     margin: 20px;
 }
 
-.scoreX,
-.scoreO {
-    font-size: 20px;
-    margin-bottom: 10px;
+.score-container {
+    display: grid;
+    grid-template-columns: repeat(3, 150px);
+    gap: 15px;
+}
+
+.score {
+    background-color: #bfff80;
+    border-radius: 10px; 
+    padding: 10px; 
+    text-align: center;
+}
+
+.score-container .score:nth-child(2) {
+    background-color: #c5c6c5;
+}
+
+.score-name {
+    font-size: 16px;
+}
+
+.playerX-count,
+.tie-count,
+.playerO-count {
+    font-size: 24px;
+    font-weight: bold;
 }
 
 .message {
@@ -70,6 +92,7 @@ body {
     cursor: pointer;
     border: none;
     border-radius: 5px;
+    margin-bottom: 40px;
 }
 
 .footer {

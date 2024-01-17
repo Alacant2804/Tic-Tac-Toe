@@ -1,5 +1,19 @@
+const Player = (name, symbol) => {
+    return { name, symbol };
+};
+
+const symbolToPlayerMap = {
+    'X': 'playerX',
+    'O': 'playerO',
+};
+
 const Gameboard = (() => {
     const board = ['', '', '', '', '', '', '', '', ''];
+    const scores = {
+        playerX: 0,
+        tie: 0,
+        playerO: 0,
+    };
 
     const checkForWinner = () => {
         for (let i = 0; i < 9; i += 3) {
@@ -45,19 +59,27 @@ const Gameboard = (() => {
         board.fill('');
     };
 
+    const updateScores = () => {
+        const winnerSymbol = checkForWinner();
+    
+        if (winnerSymbol) {
+            const winnerPlayer = symbolToPlayerMap[winnerSymbol];
+            scores[winnerPlayer] += 1;
+        } else if (checkForTie()) {
+            scores.tie += 1;
+        }
+    };
+
     return {
         board,
+        scores,
         checkForWinner,
         checkForTie,
         makeMove,
         resetBoard,
+        updateScores,
     };
 })();
-
-
-const Player = (name, symbol) => {
-    return { name, symbol };
-};
 
 const UIController = {
     messageEl: document.querySelector('.message'),
@@ -69,18 +91,18 @@ const UIController = {
 
 const GameController = (() => {
     const initializeGame = () => {
-        const player1 = Player('Player 1', 'X'); 
-        const player2 = Player('Player 2', 'O');
+        const playerX = Player('Player X', 'X'); 
+        const playerO = Player('Player O', 'O');
         
         const gameboardInstance = Gameboard; // Create an instance
 
-        const startingPlayer = Math.random() < 0.5 ? player1 : player2;
+        const startingPlayer = Math.random() < 0.5 ? playerX : playerO;
 
         UIController.displayMessage(`Game started! ${startingPlayer.name} goes first.`);
 
         gameboardInstance.players = {
-            player1,
-            player2,
+            playerX,
+            playerO,
             currentPlayer: startingPlayer,
         };
 
@@ -89,42 +111,34 @@ const GameController = (() => {
     
 
 const makeMove = (index) => {
-    // Check if the game is still ongoing
     if (!Gameboard.checkForWinner() && !Gameboard.checkForTie()) {
-        // Get the current player
         const currentPlayer = Gameboard.players.currentPlayer;
 
-        // Make a move on the board
         const moveSuccess = Gameboard.makeMove(index, currentPlayer.symbol);
 
-        // If the move is successful, check for a winner or tie
         if (moveSuccess) {
             const clickedField = document.querySelector(`.field[data-index="${index}"]`);
             clickedField.textContent = currentPlayer.symbol;
             if (Gameboard.checkForWinner()) {
                 UIController.displayMessage(`${currentPlayer.name} wins!`);
-                // Handle any additional logic for a win
             } else if (Gameboard.checkForTie()) {
                 UIController.displayMessage("It's a tie!");
-                // Handle any additional logic for a tie
             } else {
-                // Switch players for the next turn
                 Gameboard.players.currentPlayer =
-                    currentPlayer === Gameboard.players.player1
-                        ? Gameboard.players.player2
-                        : Gameboard.players.player1;
+                    currentPlayer === Gameboard.players.playerX
+                        ? Gameboard.players.playerO
+                        : Gameboard.players.playerX;
 
-                // Update the UI with the next player's turn
                 UIController.displayMessage(`${Gameboard.players.currentPlayer.name}'s turn.`);
             }
 
-            // Update the display or perform other necessary actions
+            Gameboard.updateScores();
+            updateScoresUI();
+
         } else {
-            // Inform the player that the move is invalid (e.g., the cell is already taken)
             UIController.displayMessage('Invalid move. Try again.');
         }
     } else {
-        // The game has already ended; display an appropriate message
         UIController.displayMessage('The game has ended. Restart to play again.');
     }
 };
@@ -133,13 +147,26 @@ const restartGame = () => {
     const restartButton = document.querySelector('.restart-button');
 
     restartButton.addEventListener('click', () => {
-        // Clear the content of each .field element
         document.querySelectorAll('.field').forEach(field => {
             field.textContent = '';
         });
 
         Gameboard.resetBoard();
+        Gameboard.updateScores();
+        updateScoresUI();
     });
+};
+
+const updateScoresUI = () => {
+    console.log("Updating scores UI");
+    // Update the UI with the scores
+    console.log("Player X count:", Gameboard.scores.playerX); 
+    console.log("Tie count:", Gameboard.scores.tie);
+    console.log("Player O count:", Gameboard.scores.playerO);
+
+    document.querySelector('.playerX-count').textContent = Gameboard.scores.playerX;
+    document.querySelector('.tie-count').textContent = Gameboard.scores.tie;
+    document.querySelector('.playerO-count').textContent = Gameboard.scores.playerO;
 };
 
     return {

@@ -13,8 +13,6 @@
     </header>
 
     <main class="main">
-        <div class="scoreX">Player X</div>
-        <div class="scoreO">Player O</div>
         <div class="message"></div>
         <div class="gameboard">
             <div class="field" data-index="0"></div>
@@ -28,6 +26,21 @@
             <div class="field" data-index="8"></div>
         </div>
         <button class="restart-button">Restart</button>
+
+        <section class="score-container">
+            <section class="score">
+                <p class="score-name">Player X</p>
+                <h2 class="playerX-count">0</h2>
+            </section>
+            <section class="score">
+                <p class="score-name">Ties</p>
+                <h2 class="tie-count">0</h2>
+            </section>
+            <section class="score">
+                <p class="score-name">Player O</p>
+                <h2 class="playerO-count">0</h2>
+            </section>
+        </section>
     </main>
 
     <footer class="footer">
