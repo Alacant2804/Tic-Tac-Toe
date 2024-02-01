@@ -97,7 +97,6 @@ const GameController = (() => {
     const winnerMessage = document.getElementById('winner-message');
     const nextRoundButton = document.getElementById('next-round-btn');
     const quitButton = document.getElementById('quit-btn');
-    const restartButton = document.querySelector('.restart-button');
 
     const showModal = () => {
         modal.style.display = 'block';
@@ -136,6 +135,9 @@ const GameController = (() => {
         Gameboard.updateScores();
         resetScores();
         gameInProgress = true;
+
+        const startingPlayer = Gameboard.players.currentPlayer.name;
+        UIController.displayMessage(`Game has ended. ${startingPlayer} starts the next round.`);
     };
 
     nextRoundButton.addEventListener('click', () => {
@@ -157,6 +159,7 @@ const GameController = (() => {
         winnerMessage.innerHTML = "It's a tie!";
         showModal();
     };
+    
     
     const initializeGame = () => {
         const playerX = Player('Player X', 'X'); 
