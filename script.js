@@ -160,7 +160,6 @@ const GameController = (() => {
         showModal();
     };
     
-    
     const initializeGame = () => {
         const playerX = Player('Player X', 'X'); 
         const playerO = Player('Player O', 'O');
@@ -178,108 +177,108 @@ const GameController = (() => {
         };
 
         gameboardInstance.resetBoard(); // Call resetBoard on the instance
-};
-
-const getWinningCombination = (board) => {
-    const winPatterns = [
-        // Rows
-        [0, 1, 2],
-        [3, 4, 5],
-        [6, 7, 8],
-        // Columns
-        [0, 3, 6],
-        [1, 4, 7],
-        [2, 5, 8],
-        // Diagonals
-        [0, 4, 8],
-        [2, 4, 6],
-    ];
-
-    for (const pattern of winPatterns) {
-        const [a, b, c] = pattern;
-        if (board[a] !== '' && board[a] === board[b] && board[a] === board[c]) {
-            return pattern; // Return the winning combination
-        }
-    }
-
-    return null; // No winning combination found
-};
-
-const makeMove = (index) => {
-    if (gameInProgress && !Gameboard.checkForWinner() && !Gameboard.checkForTie()) {
-        const currentPlayer = Gameboard.players.currentPlayer;
-
-        const moveSuccess = Gameboard.makeMove(index, currentPlayer.symbol);
-
-        if (moveSuccess) {
-            const clickedField = document.querySelector(`.field[data-index="${index}"]`);
-            clickedField.classList.add('symbol-text');
-            clickedField.textContent = currentPlayer.symbol;
-            if (Gameboard.checkForWinner()) {
-                const winningCombination = getWinningCombination(Gameboard.board);
-                highlightWinningCells(winningCombination);
-                UIController.displayMessage(`${currentPlayer.name} wins!`);
-                showWinnerModal(`${currentPlayer.name} wins!`);
-            } else if (Gameboard.checkForTie()) {
-                UIController.displayMessage("It's a tie!");
-                showTieModal();
-            } else {
-                Gameboard.players.currentPlayer =
-                    currentPlayer === Gameboard.players.playerX
-                        ? Gameboard.players.playerO
-                        : Gameboard.players.playerX;
-
-                UIController.displayMessage(`${Gameboard.players.currentPlayer.name}'s turn.`);
-            }
-
-            Gameboard.updateScores();
-            updateScoresUI();
-
-        } else {
-            UIController.displayMessage('Invalid move. Try again.');
-        }
-    } else {
-        UIController.displayMessage('The game has ended. Restart to play again.');
-    }
-};
-
-const highlightWinningCells = (winningCombination) => {
-    if (winningCombination) {
-        winningCombination.forEach((index) => {
-            const winningCell = document.querySelector(`.field[data-index="${index}"]`);
-            winningCell.classList.add('winning-cell');
-        });
-    }
-};
-
-const restartGame = () => {
-    document.querySelectorAll('.field').forEach(field => {
-        field.textContent = '';
-        field.classList.remove('winning-cell');
-    });
-
-    Gameboard.resetBoard();
-    Gameboard.updateScores();
-    updateScoresUI();
-};
-
-const updateScoresUI = () => {
-    console.log("Updating scores UI");
-    // Update the UI with the scores
-    console.log("Player X count:", Gameboard.scores.playerX); 
-    console.log("Tie count:", Gameboard.scores.tie);
-    console.log("Player O count:", Gameboard.scores.playerO);
-
-    document.querySelector('.playerX-count').textContent = Gameboard.scores.playerX;
-    document.querySelector('.tie-count').textContent = Gameboard.scores.tie;
-    document.querySelector('.playerO-count').textContent = Gameboard.scores.playerO;
-};
-
-    return {
-        initializeGame,
-        makeMove,
-        restartGame,
     };
+
+    const getWinningCombination = (board) => {
+        const winPatterns = [
+            // Rows
+            [0, 1, 2],
+            [3, 4, 5],
+            [6, 7, 8],
+            // Columns
+            [0, 3, 6],
+            [1, 4, 7],
+            [2, 5, 8],
+            // Diagonals
+            [0, 4, 8],
+            [2, 4, 6],
+        ];
+
+        for (const pattern of winPatterns) {
+            const [a, b, c] = pattern;
+            if (board[a] !== '' && board[a] === board[b] && board[a] === board[c]) {
+                return pattern; // Return the winning combination
+            }
+        }
+
+        return null; // No winning combination found
+    };
+
+    const makeMove = (index) => {
+        if (gameInProgress && !Gameboard.checkForWinner() && !Gameboard.checkForTie()) {
+            const currentPlayer = Gameboard.players.currentPlayer;
+
+            const moveSuccess = Gameboard.makeMove(index, currentPlayer.symbol);
+
+            if (moveSuccess) {
+                const clickedField = document.querySelector(`.field[data-index="${index}"]`);
+                clickedField.classList.add('symbol-text');
+                clickedField.textContent = currentPlayer.symbol;
+                if (Gameboard.checkForWinner()) {
+                    const winningCombination = getWinningCombination(Gameboard.board);
+                    highlightWinningCells(winningCombination);
+                    UIController.displayMessage(`${currentPlayer.name} wins!`);
+                    showWinnerModal(`${currentPlayer.name} wins!`);
+                } else if (Gameboard.checkForTie()) {
+                    UIController.displayMessage("It's a tie!");
+                    showTieModal();
+                } else {
+                    Gameboard.players.currentPlayer =
+                        currentPlayer === Gameboard.players.playerX
+                            ? Gameboard.players.playerO
+                            : Gameboard.players.playerX;
+
+                    UIController.displayMessage(`${Gameboard.players.currentPlayer.name}'s turn.`);
+                }
+
+                Gameboard.updateScores();
+                updateScoresUI();
+
+            } else {
+                UIController.displayMessage('Invalid move. Try again.');
+            }
+        } else {
+            UIController.displayMessage('The game has ended. Restart to play again.');
+        }
+    };
+
+    const highlightWinningCells = (winningCombination) => {
+        if (winningCombination) {
+            winningCombination.forEach((index) => {
+                const winningCell = document.querySelector(`.field[data-index="${index}"]`);
+                winningCell.classList.add('winning-cell');
+            });
+        }
+    };
+
+    const restartGame = () => {
+        document.querySelectorAll('.field').forEach(field => {
+            field.textContent = '';
+            field.classList.remove('winning-cell');
+        });
+
+        Gameboard.resetBoard();
+        Gameboard.updateScores();
+        updateScoresUI();
+    };
+
+    const updateScoresUI = () => {
+        console.log("Updating scores UI");
+        // Update the UI with the scores
+        console.log("Player X count:", Gameboard.scores.playerX); 
+        console.log("Tie count:", Gameboard.scores.tie);
+        console.log("Player O count:", Gameboard.scores.playerO);
+
+        document.querySelector('.playerX-count').textContent = Gameboard.scores.playerX;
+        document.querySelector('.tie-count').textContent = Gameboard.scores.tie;
+        document.querySelector('.playerO-count').textContent = Gameboard.scores.playerO;
+    };
+
+        return {
+            initializeGame,
+            makeMove,
+            restartGame,
+        };
 })();
 
 document.querySelectorAll('.field').forEach((field, index) => {
