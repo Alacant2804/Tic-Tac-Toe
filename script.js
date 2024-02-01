@@ -1,3 +1,5 @@
+let gameInProgress = true;
+
 const Player = (name, symbol) => {
     return { name, symbol };
 };
@@ -90,6 +92,60 @@ const UIController = {
 }
 
 const GameController = (() => {
+    const modal = document.getElementById('modal');
+    const winnerMessage = document.getElementById('winner-message');
+    const nextRoundBtn = document.getElementById('next-round-btn');
+    const quitBtn = document.getElementById('quit-btn');
+
+    const hideModal = () => {
+        const modal = document.getElementById('modal');
+        modal.style.display = 'none';
+    };
+
+    const startNextRound = () => {
+        Gameboard.resetBoard();
+        document.querySelectorAll('.field').forEach(field => {
+            field.textContent = '';
+            field.classList.remove('winning-cell');
+        });
+        const startingPlayer = Math.random() < 0.5 ? Gameboard.players.playerX : Gameboard.players.playerO;
+        Gameboard.players.currentPlayer = startingPlayer;
+        UIController.displayMessage(`Next round! ${startingPlayer.name} goes first.`);
+        gameInProgress = true;
+    };
+
+    const resetScores = () => {
+        Gameboard.scores.playerX = 0;
+        Gameboard.scores.tie = 0;
+        Gameboard.scores.playerO = 0;
+        updateScoresUI();
+    };
+
+    nextRoundBtn.addEventListener('click', () => {
+        hideModal();
+        startNextRound();
+    });
+
+    quitBtn.addEventListener('click', () => {
+        hideModal();
+        quitGame();
+    });
+
+    const showModal = () => {
+    const modal = document.getElementById('modal');
+    modal.style.display = 'block';
+    };
+
+    const showWinnerModal = (message) => {
+        winnerMessage.innerHTML = `Congratulations! ${message}`;
+        showModal();
+    };
+
+    const showTieModal = () => {
+        winnerMessage.innerHTML = "It's a tie!";
+        showModal();
+    };
+    
     const initializeGame = () => {
         const playerX = Player('Player X', 'X'); 
         const playerO = Player('Player O', 'O');
@@ -108,21 +164,50 @@ const GameController = (() => {
 
         gameboardInstance.resetBoard(); // Call resetBoard on the instance
 };
-    
+
+const getWinningCombination = (board) => {
+    const winPatterns = [
+        // Rows
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+        // Columns
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8],
+        // Diagonals
+        [0, 4, 8],
+        [2, 4, 6],
+    ];
+
+    for (const pattern of winPatterns) {
+        const [a, b, c] = pattern;
+        if (board[a] !== '' && board[a] === board[b] && board[a] === board[c]) {
+            return pattern; // Return the winning combination
+        }
+    }
+
+    return null; // No winning combination found
+};
 
 const makeMove = (index) => {
-    if (!Gameboard.checkForWinner() && !Gameboard.checkForTie()) {
+    if (gameInProgress && !Gameboard.checkForWinner() && !Gameboard.checkForTie()) {
         const currentPlayer = Gameboard.players.currentPlayer;
 
         const moveSuccess = Gameboard.makeMove(index, currentPlayer.symbol);
 
         if (moveSuccess) {
             const clickedField = document.querySelector(`.field[data-index="${index}"]`);
+            clickedField.classList.add('symbol-text');
             clickedField.textContent = currentPlayer.symbol;
             if (Gameboard.checkForWinner()) {
+                const winningCombination = getWinningCombination(Gameboard.board);
+                highlightWinningCells(winningCombination);
                 UIController.displayMessage(`${currentPlayer.name} wins!`);
+                showWinnerModal(`${currentPlayer.name} wins!`);
             } else if (Gameboard.checkForTie()) {
                 UIController.displayMessage("It's a tie!");
+                showTieModal();
             } else {
                 Gameboard.players.currentPlayer =
                     currentPlayer === Gameboard.players.playerX
@@ -143,18 +228,50 @@ const makeMove = (index) => {
     }
 };
 
+const highlightWinningCells = (winningCombination) => {
+    if (winningCombination) {
+        winningCombination.forEach((index) => {
+            const winningCell = document.querySelector(`.field[data-index="${index}"]`);
+            winningCell.classList.add('winning-cell');
+        });
+    }
+};
+
+const quitGame = () => {
+    const quitButton = document.querySelector('#quit-btn');
+
+    quitButton.addEventListener('click', () => {
+        document.querySelectorAll('.field').forEach(field => {
+            field.textContent = '';
+            field.classList.remove('winning-cell');
+        });
+
+        Gameboard.resetBoard();
+        Gameboard.updateScores();
+        resetScores();
+        gameInProgress = true;
+    });
+
+    gameInProgress = false;
+}
+
+
 const restartGame = () => {
     const restartButton = document.querySelector('.restart-button');
 
     restartButton.addEventListener('click', () => {
         document.querySelectorAll('.field').forEach(field => {
             field.textContent = '';
+            field.classList.remove('winning-cell');
         });
 
         Gameboard.resetBoard();
         Gameboard.updateScores();
         updateScoresUI();
+        gameInProgress = true;
     });
+
+    gameInProgress = false;
 };
 
 const updateScoresUI = () => {
@@ -180,7 +297,18 @@ document.querySelectorAll('.field').forEach((field, index) => {
     field.addEventListener('click', () => {
         GameController.makeMove(index);
     });
+
+    field.addEventListener('mouseenter', () => {
+        if (gameInProgress && !Gameboard.checkForWinner() && !Gameboard.checkForTie() && field.textContent === '') {
+            field.classList.add('hover-highlight');
+        }
+    });
+
+    field.addEventListener('mouseleave', () => {
+        field.classList.remove('hover-highlight');
+    });
 });
+
 
 document.querySelector('.restart-button').addEventListener('click', () => {
     GameController.restartGame();

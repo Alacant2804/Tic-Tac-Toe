@@ -74,13 +74,9 @@ body {
     cursor: pointer;
 }
 
-.field:hover {
-    background-color: #99ff66;
-}
-
 .field::after {
-    content: attr(data-symbol); /* Use the data-symbol attribute to dynamically set X or O */
-    font-size: 1em; /* Adjust the font size as needed */
+    content: attr(data-symbol); 
+    font-size: 1em;
 }
 
 .restart-button {
@@ -103,4 +99,75 @@ body {
     position: fixed;
     bottom: 0;
     width: 100%;
+}
+
+.symbol-text {
+    font-size: 56px;
+}
+
+.winning-cell {
+    background-color: yellow;
+}
+
+.field.hover-highlight:hover {
+    background-color: #99ff66;
+}
+
+a {
+    text-decoration: none;
+    color: white;
+}
+
+a:hover {
+    color: #ffcc00;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+    overflow: auto;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    text-align: center;
+    margin: 10% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.modal-content #winner-message {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.modal-content .button-container {
+    display: flex;
+    justify-content: center;
+}
+
+.modal-content button {
+    background-color: #ffcc00;
+    color: #333;
+    font-size: 18px;
+    padding: 10px 20px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    margin: 0 10px;
+}
+
+/* Hover effect for the close button */
+.modal-content button:hover {
+    background-color: #ffd633;
 }
