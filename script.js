@@ -1,8 +1,4 @@
-let gameInProgress = true;
-
-const Player = (name, symbol) => {
-    return { name, symbol };
-};
+const Player = (name, symbol) => ({ name, symbol });
 
 const symbolToPlayerMap = {
     'X': 'playerX',
@@ -10,7 +6,7 @@ const symbolToPlayerMap = {
 };
 
 const Gameboard = (() => {
-    const board = ['', '', '', '', '', '', '', '', ''];
+    const board = Array(9).fill('');
     const scores = {
         playerX: 0,
         tie: 0,
@@ -98,13 +94,9 @@ const GameController = (() => {
     const nextRoundButton = document.getElementById('next-round-btn');
     const quitButton = document.getElementById('quit-btn');
 
-    const showModal = () => {
-        modal.style.display = 'block';
-    };
+    const showModal = () => { modal.style.display = 'block'; };
 
-    const hideModal = () => {
-        modal.style.display = 'none';
-    };
+    const hideModal = () => { modal.style.display = 'none'; };
 
     const startNextRound = () => {
         Gameboard.resetBoard();
@@ -137,18 +129,11 @@ const GameController = (() => {
         gameInProgress = true;
 
         const startingPlayer = Gameboard.players.currentPlayer.name;
-        UIController.displayMessage(`Game has ended. ${startingPlayer} starts the next round.`);
+        UIController.displayMessage(`Game has ended. ${startingPlayer} starts the game.`);
     };
 
-    nextRoundButton.addEventListener('click', () => {
-        hideModal();
-        startNextRound();
-    });
-
-    quitButton.addEventListener('click', () => {
-        hideModal();
-        quitGame();
-    });
+    nextRoundButton.addEventListener('click', () => { hideModal(); startNextRound(); });
+    quitButton.addEventListener('click', () => { hideModal(); quitGame(); });
 
     const showWinnerModal = (message) => {
         winnerMessage.innerHTML = `Congratulations! ${message}`;
@@ -263,7 +248,6 @@ const GameController = (() => {
     };
 
     const updateScoresUI = () => {
-        console.log("Updating scores UI");
         // Update the UI with the scores
         console.log("Player X count:", Gameboard.scores.playerX); 
         console.log("Tie count:", Gameboard.scores.tie);
