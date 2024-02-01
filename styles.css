@@ -167,7 +167,6 @@ a:hover {
     margin: 0 10px;
 }
 
-/* Hover effect for the close button */
 .modal-content button:hover {
     background-color: #ffd633;
 }

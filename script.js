@@ -92,13 +92,18 @@ const UIController = {
 }
 
 const GameController = (() => {
+    let gameInProgress = true;
     const modal = document.getElementById('modal');
     const winnerMessage = document.getElementById('winner-message');
-    const nextRoundBtn = document.getElementById('next-round-btn');
-    const quitBtn = document.getElementById('quit-btn');
+    const nextRoundButton = document.getElementById('next-round-btn');
+    const quitButton = document.getElementById('quit-btn');
+    const restartButton = document.querySelector('.restart-button');
+
+    const showModal = () => {
+        modal.style.display = 'block';
+    };
 
     const hideModal = () => {
-        const modal = document.getElementById('modal');
         modal.style.display = 'none';
     };
 
@@ -121,20 +126,27 @@ const GameController = (() => {
         updateScoresUI();
     };
 
-    nextRoundBtn.addEventListener('click', () => {
+    const quitGame = () => {
+        document.querySelectorAll('.field').forEach(field => {
+            field.textContent = '';
+            field.classList.remove('winning-cell');
+        });
+    
+        Gameboard.resetBoard();
+        Gameboard.updateScores();
+        resetScores();
+        gameInProgress = true;
+    };
+
+    nextRoundButton.addEventListener('click', () => {
         hideModal();
         startNextRound();
     });
 
-    quitBtn.addEventListener('click', () => {
+    quitButton.addEventListener('click', () => {
         hideModal();
         quitGame();
     });
-
-    const showModal = () => {
-    const modal = document.getElementById('modal');
-    modal.style.display = 'block';
-    };
 
     const showWinnerModal = (message) => {
         winnerMessage.innerHTML = `Congratulations! ${message}`;
@@ -237,41 +249,15 @@ const highlightWinningCells = (winningCombination) => {
     }
 };
 
-const quitGame = () => {
-    const quitButton = document.querySelector('#quit-btn');
-
-    quitButton.addEventListener('click', () => {
-        document.querySelectorAll('.field').forEach(field => {
-            field.textContent = '';
-            field.classList.remove('winning-cell');
-        });
-
-        Gameboard.resetBoard();
-        Gameboard.updateScores();
-        resetScores();
-        gameInProgress = true;
-    });
-
-    gameInProgress = false;
-}
-
-
 const restartGame = () => {
-    const restartButton = document.querySelector('.restart-button');
-
-    restartButton.addEventListener('click', () => {
-        document.querySelectorAll('.field').forEach(field => {
-            field.textContent = '';
-            field.classList.remove('winning-cell');
-        });
-
-        Gameboard.resetBoard();
-        Gameboard.updateScores();
-        updateScoresUI();
-        gameInProgress = true;
+    document.querySelectorAll('.field').forEach(field => {
+        field.textContent = '';
+        field.classList.remove('winning-cell');
     });
 
-    gameInProgress = false;
+    Gameboard.resetBoard();
+    Gameboard.updateScores();
+    updateScoresUI();
 };
 
 const updateScoresUI = () => {
@@ -308,7 +294,6 @@ document.querySelectorAll('.field').forEach((field, index) => {
         field.classList.remove('hover-highlight');
     });
 });
-
 
 document.querySelector('.restart-button').addEventListener('click', () => {
     GameController.restartGame();
