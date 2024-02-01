@@ -1,14 +1,14 @@
 # Tic Tac Toe Game 🎮
 
 ## Table of Contents
-- [Introduction](https://github.com/Alacant2804/Tic-Tac-Toe/edit/main/README.md#introduction)
+- [Introduction](https://github.com/Alacant2804/Tic-Tac-Toe/blob/main/README.md#introduction)
 - [Features](https://github.com/Alacant2804/Tic-Tac-Toe/edit/main/README.md#features)
 - [How to Play](https://github.com/Alacant2804/Tic-Tac-Toe/edit/main/README.md#how-to-play)
 - [Installation](https://github.com/Alacant2804/Tic-Tac-Toe/edit/main/README.md#installation)
 - [Usage](https://github.com/Alacant2804/Tic-Tac-Toe/edit/main/README.md#usage)
 - [Game Rules](https://github.com/Alacant2804/Tic-Tac-Toe/edit/main/README.md#game-rules)
 - [Contributing](https://github.com/Alacant2804/Tic-Tac-Toe/edit/main/README.md#contributing)
-- [License](https://github.com/Alacant2804/Tic-Tac-Toe/edit/main/README.md#license)
+- [License](https://github.com/Alacant2804/Tic-Tac-Toe/blob/main/README.md#license)
 
 ## Introduction 🚀
 Welcome to the Tic Tac Toe Game! This is a simple implementation of the classic Tic Tac Toe game built using HTML, CSS, and JavaScript.
