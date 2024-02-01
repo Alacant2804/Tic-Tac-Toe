@@ -1,3 +1,5 @@
+let gameInProgress = true;
+
 const Player = (name, symbol) => ({ name, symbol });
 
 const symbolToPlayerMap = {
@@ -88,7 +90,6 @@ const UIController = {
 }
 
 const GameController = (() => {
-    let gameInProgress = true;
     const modal = document.getElementById('modal');
     const winnerMessage = document.getElementById('winner-message');
     const nextRoundButton = document.getElementById('next-round-btn');
