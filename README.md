@@ -34,14 +34,20 @@ Welcome to the Tic Tac Toe Game! This is a simple implementation of the classic 
    ```bash
    git clone https://github.com/your-username/tic-tac-toe.git
 Open the index.html file in your web browser.
+
 Usage 🎲
+
 Play the game by clicking on the empty cells to make moves.
 Use the "Next Round" button to start a new round.
 Click the "Quit" button to end the current game.
+
 Game Rules 📜
+
 The game is won by the player who first aligns three of their symbols (X or O) in a row, column, or diagonal.
 If all cells are filled and there is no winner, the game is declared a tie.
+
 Contributing 🤝
+
 Contributions are welcome! If you have any ideas for improvements or find any issues, please open an issue or create a pull request.
 
 License 📄
