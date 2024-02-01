@@ -11,7 +11,7 @@
 - [License](#license)
 
 ## Introduction 🚀
-Welcome to the Tic Tac Toe Game! This is a simple implementation of the classic Tic Tac Toe game built using HTML, CSS, and JavaScript.
+Welcome to the Tic Tac Toe Game! This is a simple implementation of the classic Tic Tac Toe game built using HTML, CSS, and JavaScript. Online preview [here](https://alacant2804.github.io/Tic-Tac-Toe/)
 
 ## Features 🌟
 - Two-player gameplay (X and O)
