@@ -3,6 +3,7 @@ body {
     background-color: #f8f8f8;
     margin: 0;
     padding: 0;
+    max-width: 100%;
 }
 
 .header {
@@ -24,10 +25,11 @@ body {
 
 .score-container {
     display: grid;
-    grid-template-columns: repeat(3, 150px);
+    grid-template-columns: repeat(3, minmax(100px, 1fr));
     gap: 15px;
     margin-bottom: 20px;
     justify-content: center;
+    width: 100%;
 }
 
 .score {
@@ -99,17 +101,6 @@ body {
     margin-bottom: 40px;
 }
 
-.footer {
-    background-color: #333;
-    color: #fff;
-    text-align: center;
-    padding: 10px;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    margin-top: 10px;
-}
-
 .symbol-text {
     font-size: 56px;
 }
@@ -178,4 +169,12 @@ a:hover {
 
 .modal-content button:hover {
     background-color: #ffd633;
+}
+
+.footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+    margin-top: 10px;
 }
