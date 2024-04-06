@@ -200,14 +200,17 @@ const GameController = (() => {
                 const clickedField = document.querySelector(`.field[data-index="${index}"]`);
                 clickedField.classList.add('symbol-text');
                 clickedField.textContent = currentPlayer.symbol;
+                
                 if (Gameboard.checkForWinner()) {
                     const winningCombination = getWinningCombination(Gameboard.board);
                     highlightWinningCells(winningCombination);
                     UIController.displayMessage(`${currentPlayer.name} wins!`);
                     showWinnerModal(`${currentPlayer.name} wins!`);
+
                 } else if (Gameboard.checkForTie()) {
                     UIController.displayMessage("It's a tie!");
                     showTieModal();
+
                 } else {
                     Gameboard.players.currentPlayer =
                         currentPlayer === Gameboard.players.playerX
