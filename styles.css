@@ -183,7 +183,7 @@ a:hover {
 
 @media (max-width: 320px) {
     .main{
-        margin-top: 5rem;
+        margin-top: 3rem;
     }
 
     .gameboard {
@@ -228,10 +228,6 @@ a:hover {
 }
 
 @media (min-width: 1440px) {
-    .main {
-        margin-top: 4rem;
-    }
-
     .message {
         font-size: 28px;
     }
