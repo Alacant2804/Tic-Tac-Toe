@@ -65,6 +65,7 @@ body {
     font-size: 18px;
     margin-bottom: 20px;
     color: #333;
+    text-align: center;
 }
 
 .gameboard {
@@ -90,6 +91,10 @@ body {
     font-size: 1em;
 }
 
+.field:hover {
+    background-color: #99ff66;
+}
+
 .restart-button {
     background-color: #ffcc00;
     color: #333;
@@ -108,10 +113,6 @@ body {
 
 .winning-cell {
     background-color: yellow;
-}
-
-.field.hover-highlight:hover {
-    background-color: #99ff66;
 }
 
 a {

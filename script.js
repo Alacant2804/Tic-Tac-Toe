@@ -201,9 +201,13 @@ const GameController = (() => {
                 clickedField.classList.add('symbol-text');
                 clickedField.textContent = currentPlayer.symbol;
                 
-                if (Gameboard.checkForWinner()) {
-                    const winningCombination = getWinningCombination(Gameboard.board);
-                    highlightWinningCells(winningCombination);
+                const winnerSymbol = Gameboard.checkForWinner();
+                const winningCombination = getWinningCombination(Gameboard.board);
+
+                Gameboard.updateScores();
+                updateScoresUI();
+                
+                if (winnerSymbol) {
                     UIController.displayMessage(`${currentPlayer.name} wins!`);
                     showWinnerModal(`${currentPlayer.name} wins!`);
 
@@ -220,8 +224,10 @@ const GameController = (() => {
                     UIController.displayMessage(`${Gameboard.players.currentPlayer.name}'s turn.`);
                 }
 
-                Gameboard.updateScores();
-                updateScoresUI();
+                if (winningCombination) {
+                    highlightWinningCells(winningCombination);
+                }
+        
 
             } else {
                 UIController.displayMessage('Invalid move. Try again.');
@@ -272,16 +278,6 @@ const GameController = (() => {
 document.querySelectorAll('.field').forEach((field, index) => {
     field.addEventListener('click', () => {
         GameController.makeMove(index);
-    });
-
-    field.addEventListener('mouseenter', () => {
-        if (gameInProgress && !Gameboard.checkForWinner() && !Gameboard.checkForTie() && field.textContent === '') {
-            field.classList.add('hover-highlight');
-        }
-    });
-
-    field.addEventListener('mouseleave', () => {
-        field.classList.remove('hover-highlight');
     });
 });
 
