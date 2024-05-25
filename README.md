@@ -1,15 +1,5 @@
 # Tic Tac Toe Game 🎮
 
-## Table of Contents
-- [Introduction](#introduction)
-- [Features](#features)
-- [How to Play](#how-to-play)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Game Rules](#game-rules)
-- [Contributing](#contributing)
-- [License](#license)
-
 ## Introduction 🚀
 Welcome to the Tic Tac Toe Game! This is a simple implementation of the classic Tic Tac Toe game built using HTML, CSS, and JavaScript. Online preview [here](https://alacant2804.github.io/Tic-Tac-Toe/)
 
